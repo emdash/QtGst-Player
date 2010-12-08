@@ -32,11 +32,12 @@ class PlayerWindow : QWidget
   
     PlayerWindow(Player * player);
     
-    public Q_SLOTS:
+    private Q_SLOTS:
     void stateChanged(QGst::State state);
     void positionChanged(quint64 position);
     void durationChanged(quint64 position);
     void playButtonClicked(bool checked);
+    void sliderMoved(int value);
     
  private:
     void createUi();

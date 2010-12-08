@@ -24,6 +24,16 @@ static int clockTimeToInt(quint64 time)
   return int(time >> 32);
 }
 
+static quint64 clockTimeFromInt(int time)
+{
+  return quint64(time) << 32;
+}
+
+
+class SeekingSlider : public QSlider
+{
+};
+
 PlayerWindow::PlayerWindow(Player * player)
 {
   m_player = player;
@@ -45,11 +55,11 @@ void PlayerWindow::createUi()
   info = new QLabel();
   hbox->addWidget(info);
   
-  position = new QSlider();
+  position = new SeekingSlider();
+  position->setTracking(false);
   position->setOrientation(Qt::Horizontal);
   position->setMinimum(0);
   position->setMaximum(0);
-  position->setTracking(false);
   vbox->addWidget(position);
   
   resize(320, 75);
@@ -63,8 +73,9 @@ void PlayerWindow::createUi()
 	  this, SLOT(positionChanged(quint64)));
   connect(play_pause, SIGNAL(clicked(bool)),
 	  this, SLOT(playButtonClicked(bool)));
+  connect(position, SIGNAL(sliderMoved(int)),
+	  this, SLOT(sliderMoved(int)));
 
-  position->setEnabled(false);
   durationChanged(-1);
   positionChanged(-1);
 }
@@ -124,4 +135,9 @@ void PlayerWindow::playButtonClicked(bool checked)
   } else {
     m_player->play();
   }
+}
+
+void PlayerWindow::sliderMoved(int value)
+{
+  m_player->setPosition(clockTimeFromInt(value));
 }

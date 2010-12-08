@@ -41,7 +41,7 @@ class Player : public QObject
 {
     Q_OBJECT
 	Q_PROPERTY(QGst::State state READ state WRITE setState NOTIFY stateChanged)
-	Q_PROPERTY(quint64 position READ position NOTIFY positionChanged)
+	Q_PROPERTY(quint64 position READ position WRITE setPosition NOTIFY positionChanged)
 	Q_PROPERTY(quint64 duration READ duration NOTIFY duration)
 public:
     Player(const QString & fileName);
@@ -50,6 +50,7 @@ public:
     void setState(QGst::State state);
     QGst::State state();
     quint64 position();
+    void setPosition(quint64 position);
     quint64 duration();
 
     void play(void);

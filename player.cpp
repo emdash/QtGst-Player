@@ -96,6 +96,11 @@ quint64 Player::position()
     return m_position;
 }
 
+void Player::setPosition(quint64 value)
+{
+  m_pipeline->seek(QGst::FormatTime, QGst::SeekFlagFlush | QGst::SeekFlagAccurate, value);
+}
+
 void Player::privSetPosition(quint64 value)
 {
   if (value != m_position) {
